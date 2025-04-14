@@ -1,0 +1,41 @@
+kind: project
+metadata:
+  name: mlrun-project
+spec:
+  conda: ''
+  load_source_on_run: true
+  functions:
+  - url: data-prep.py
+    name: data-prep
+    kind: job
+    image: mlrun/mlrun
+    handler: prep_data
+  - url: trainer.py
+    name: trainer
+    kind: job
+    image: mlrun/mlrun
+    handler: train
+  - url: serving.py
+    name: model-serving
+    kind: serving
+    image: mlrun/mlrun
+    handler: Classifier
+  - url: data-prep.py
+    name: load-cancer-data
+    kind: job
+    image: mlrun/mlrun
+  - url: serving.py
+    name: serving
+    kind: serving
+    image: mlrun/mlrun
+  workflows:
+  - name: mlrun_project
+    path: workflow.py
+  - name: mlrun_pipeline
+    path: workflow.py
+  - name: mlrun-project
+    path: workflow.py
+  - name: mlrun-pipeline
+    path: workflow.py
+  source: .
+  desired_state: online
